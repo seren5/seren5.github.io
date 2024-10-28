@@ -1,0 +1,89 @@
+---
+title: "Fancier Maps"
+editor: visual
+---
+
+We can use leaflet to make some fancier maps.
+
+```{r}
+#install.packages(leaflet)
+library(leaflet)
+```
+
+[Manual here](https://cran.r-project.org/web/packages/leaflet/leaflet.pdf) [Here is a text on leaflet.](https://bookdown.org/nicohahn/making_maps_with_r5/docs/leaflet.html)
+
+```{r}
+leaflet()|>
+  addTiles()
+```
+
+Let's put Smith College on the map. [Here's the lat and long.](https://www.google.com/search?q=smith+college+latitude+and+longitude&client=firefox-b-1-lm&sca_esv=e89764eee12a19ad&ei=ibXQZuWTDJf8ptQP-6iyqQw&oq=smith+college+latitude+and+long&gs_lp=Egxnd3Mtd2l6LXNlcnAiH3NtaXRoIGNvbGxlZ2UgbGF0aXR1ZGUgYW5kIGxvbmcqAggAMggQIRigARjDBDIIECEYoAEYwwRI9ylQ_RhY2R5wA3gBkAEAmAGeAaABkAWqAQMwLjW4AQHIAQD4AQGYAgigAsUFwgIKEAAYsAMY1gQYR8ICChAhGKABGMMEGArCAgQQIRgKmAMAiAYBkAYIkgcDMy41oAfwFg&sclient=gws-wiz-serp)
+
+```{r}
+leaflet()|>
+  addTiles() |>
+  addMarkers(lng = 72.6403,
+             lat = 42.3163,
+             popup = "Home of the Pioneers",
+             label = "Smith College")
+```
+
+Whooops. We need a negative sign to indicate west.
+
+```{r}
+leaflet()|>
+  addTiles() |>
+  addMarkers(lng = -72.6403,
+             lat = 42.3163,
+             popup = "Home of the Pioneers",
+             label = "Smith College")
+  
+  
+
+
+```
+
+```{r}
+leaflet()|>
+  addTiles() |>
+  addMarkers(lng = -72.6403,
+             lat = 42.3163,
+             popup = "Home of the Pioneers",
+             label = "Smith College")
+```
+
+You try:
+
+1.  Put your home city and Smith College on the same map.
+
+2.  Use `awesomeIcons()` to make your home look like a home and smith look like a college.
+
+    i.  You will first need to save the icon an object. (Maybe the home is called home).
+
+        Hint: Use icon "education", "book", "sleeping" for the college icon.
+
+    ii. Then you will need to use `addAwesomeMarkers()`.
+
+3.  Finally add this webpage to your index.qmd and make sure it renders correctly.
+
+```{r}
+# My awesome icons are not working on the rendered map
+# Created objects for Smith & home icons
+education <- awesomeIcons(icon = "education",
+                          iconColor = "black")
+home <- awesomeIcons(iconColor = "white")
+
+# Used awesome markers to mark it on the map
+leaflet()|>
+  addTiles() |>
+  addAwesomeMarkers(lng = -72.6403,
+             lat = 42.3163,
+             icon = education,
+             popup = "Home of the Pioneers",
+             label = "Smith College") |>
+  addAwesomeMarkers(lng = 123.4330,
+             lat = 41.8048,
+             icon = home,
+             popup = "Original Hometown",
+             label = "Shenyang")
+```

@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "website",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nThis is a link to your first map\nThis is a link to your fancy map"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "My website",
+    "section": "",
+    "text": "Nicholas Schwab is a lecture in Statistical and Data Sciences. He is a tenured professor at Holyoke Community College. When not teaching data science, he enjoys rock climbing, biking, and reading childrens’ books with his kids."
+  },
+  {
+    "objectID": "about.html#student-hours",
+    "href": "about.html#student-hours",
+    "title": "My website",
+    "section": "Student Hours",
+    "text": "Student Hours\nDrop into the office:\n\nWednesday: 1:30-2:30 pm\nBy appointment in McConnell 214\n\nPlease let me know if the above times do not work for your schedule and we can coordinate another time."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "My website",
+    "section": "Education",
+    "text": "Education\n\nMS in Data Science (~2026)\nUniversity of Texas at Austin\nAustin, Texas\nMA in Mathematics (2009)\nAppalchain State University\nBoone, NC\nBA in Mathematics (2007)\nUC Santa Cruz\nSanta Cruz, CA"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "My website",
+    "section": "Experience",
+    "text": "Experience\n\nProfessor of Mathematics\nHolyoke Community College\nHolyoke, MA 2014–2023"
+  },
+  {
+    "objectID": "maps/function_map.html",
+    "href": "maps/function_map.html",
+    "title": "Where we’re from.",
+    "section": "",
+    "text": "#install.packages(googlesheets4)\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(maps)\n\n\nAttaching package: 'maps'\n\nThe following object is masked from 'package:purrr':\n\n    map\n\nlibrary(googlesheets4)\n\n\nclass_info &lt;- read_sheet(\"https://docs.google.com/spreadsheets/d/1XOAFQvBcFvhKwEl5xH6l3nRJK2Wk0hWZ18S9kAZclQ0/edit?usp=sharing\") |&gt;\n  janitor::clean_names()\n\n! Using an auto-discovered, cached token.\n  To suppress this message, modify your code or options to clearly consent to\n  the use of a cached token.\n  See gargle's \"Non-interactive auth\" vignette for more details:\n  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;\nℹ The googlesheets4 package is using a cached token for 'eren@smith.edu'.\n✔ Reading from \"Fall 2024  Questionnaire (Responses)\".\n✔ Range 'Form Responses 1'.\n\n# selecting only the column we are interested in and making it into a vector.\ncountry_vector &lt;- as.vector( \n  class_info |&gt;\n    select(\"country\"))\n\n\nclass_maps &lt;- function(country_vector){\n  \n  # Put the body of your function here, don't overthink it.\n  \n}\n# If the line below throws an error its possible your country is not in the database or mispelled. \nclass_maps(country_vector)\n\nNULL\n\n\n\n# A function for finding appropriate names of countries\n\n# A test vector\nsub_vector&lt;- c(\"China\", \"United States\", \"Afghanistan\")\n\nmap_names &lt;- function(name){\n  # The first line makes sure we have a string\n  name &lt;- as.character(name)\n  \n  # All 1600 names are in the database can be save as follows\n  vector_of_names &lt;- map(plot = FALSE)$names\n  \n  # This gets a vector of boolean values. \n  Truths &lt;- name %in% vector_of_names\n  \n  \n  print(\"The following countries are in the databse\")\n  \n  # This goes back to our original vector and extrance only the true names. \n  print(name[Truths])\n  \n  print(\"The following countries are not in the databse\")\n  \n  # This goes back to our original vector and extrance only the true names. \n  print(name[Truths == FALSE])\n  \n}\nmap_names(sub_vector)\n\n[1] \"The following countries are in the databse\"\n[1] \"China\"       \"Afghanistan\"\n[1] \"The following countries are not in the databse\"\n[1] \"United States\""
+  },
+  {
+    "objectID": "maps/fancy_maps.html",
+    "href": "maps/fancy_maps.html",
+    "title": "Fancier Maps",
+    "section": "",
+    "text": "We can use leaflet to make some fancier maps.\n\n#install.packages(leaflet)\nlibrary(leaflet)\n\nManual here Here is a text on leaflet.\n\nleaflet()|&gt;\n  addTiles()\n\n\n\n\n\nLet’s put Smith College on the map. Here’s the lat and long.\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = 72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\nWhooops. We need a negative sign to indicate west.\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = -72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = -72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\nYou try:\n\nPut your home city and Smith College on the same map.\nUse awesomeIcons() to make your home look like a home and smith look like a college.\n\nYou will first need to save the icon an object. (Maybe the home is called home).\nHint: Use icon “education”, “book”, “sleeping” for the college icon.\nThen you will need to use addAwesomeMarkers().\n\nFinally add this webpage to your index.qmd and make sure it renders correctly.\n\n\n# My awesome icons are not working on the rendered map\n# Created objects for Smith & home icons\neducation &lt;- awesomeIcons(icon = \"education\",\n                          iconColor = \"black\")\nhome &lt;- awesomeIcons(iconColor = \"white\")\n\n# Used awesome markers to mark it on the map\nleaflet()|&gt;\n  addTiles() |&gt;\n  addAwesomeMarkers(lng = -72.6403,\n             lat = 42.3163,\n             icon = education,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\") |&gt;\n  addAwesomeMarkers(lng = 123.4330,\n             lat = 41.8048,\n             icon = home,\n             popup = \"Original Hometown\",\n             label = \"Shenyang\")"
+  },
+  {
+    "objectID": "maps/first_map.html",
+    "href": "maps/first_map.html",
+    "title": "1st_Maps",
+    "section": "",
+    "text": "#install.packages(\"maps\")\nlibrary(maps)\nHere are some maps from the map package. 1"
+  },
+  {
+    "objectID": "maps/first_map.html#the-world",
+    "href": "maps/first_map.html#the-world",
+    "title": "1st_Maps",
+    "section": "The world",
+    "text": "The world\n\nmap()"
+  },
+  {
+    "objectID": "maps/first_map.html#the-us",
+    "href": "maps/first_map.html#the-us",
+    "title": "1st_Maps",
+    "section": "The US",
+    "text": "The US\n\nmaps::map(database = \"state\")\n\n\n\n\n\n\n\n\n\nmap(database = \"state\", regions = \"Massachusetts\")\n\n\n\n\n\n\n\n\n\nmap(database = \"county\", regions = c(\"Massachusetts\"))\nmap.cities()\n\n\n\n\n\n\n\n\n\nnew_england &lt;-c('Vermont',\"Massachusetts\",\"Connecticut\", \"Rhode Island\", \"New Hampshire\", \"Maine\")\n\nmap(database = \"county\", regions = new_england)\nmap.cities()\n\n\n\n\n\n\n\n\nYou try:\nFirst maps\n\nAdd another map of California, Oregon and Washington.\n\nColor this map. hint: type ?map() into the console to read the documentation.\n\nColor the map with three colors of your choice.\nColor the border only.\n\n\nMake a world map with China, Indonesia and Australia.\n\n\nmap(database = \"state\", regions = c(\"California\", \"Oregon\", \"Washington\"), fill = TRUE, col = c(\"orange\", \"blue\", \"pink\", \"green\"))\n\n\n\n\n\n\n\n\n\nmap(database = \"state\", regions = c(\"California\", \"Oregon\", \"Washington\"), fill = FALSE, col = c(\"purple\"))\n\n\n\n\n\n\n\n\n\nmap(database = \"world\", regions = c(\"China\", \"Indonesia\", \"Australia\"))"
+  },
+  {
+    "objectID": "maps/first_map.html#footnotes",
+    "href": "maps/first_map.html#footnotes",
+    "title": "1st_Maps",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://cran.r-project.org/web/packages/maps/maps.pdf↩︎"
+  }
+]
