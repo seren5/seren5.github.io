@@ -1,0 +1,153 @@
+---
+title: "SDS 192 Project 3"
+subtitle: "Maps"
+author: 
+- name: Maisha Tasneem
+  affiliation: Smith College
+- name: Emily Ren
+  affiliation: Smith College
+date: "`r format(Sys.Date(), '%B %e, %Y')`"
+editor: 
+  mode: source
+output: 
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    theme: lumen
+    df_print: paged
+    code_folding: show
+bibliography: ref.bib 
+
+execute:
+  echo: false
+  warning: false
+---
+
+```{r setup}
+# Include all libraries you may need for your project here. 
+
+library(tidyverse)
+library(janitor)
+library(tidygeocoder)
+library(sf)
+library(usmap)
+library(maps)
+library(knitr)
+```
+
+```{r helper-chunk}
+# Loading the dataset
+csv_file <- read.csv("NCI_State_Late_Stage_Breast_Cancer_Incidence_Rates.csv")
+
+```
+
+```{r}
+#Wrangling the dataset to keep relevant data
+csv_file <- csv_file |> 
+  clean_names() |>
+   select("fips", "state_abbr", , "state_name", "all_age_f_aa_rate", "under50_f_aa_rate", "age50over_f_aa_rate", "shape_area", "shape_length")
+```
+
+# Across the USA
+
+```{r analysis-1}
+# Group member 1 work here!
+
+#Function to get the rates for any age rage across the USA
+all_states_map_function <- function(value, legendlabel){
+  plot_usmap(regions = "states",
+             data = csv_file, 
+             value = value) +
+  theme_minimal() +
+  labs(
+    title = "Late Stage Breast Cancer Incidence Rate* across the USA", 
+    subtitle = legendlabel,
+    x = NULL, 
+    y = NULL,
+    fill = paste(legendlabel, "^"),
+       #reference for paste() - https://www.geeksforgeeks.org/string-concatenation-in-r-programming/
+    caption = "*Incidence rates (cases per 100,000 population per year) are age-adjusted
+    ^Black areas indicate missing data for Indiana and Nevada") +
+  scale_fill_gradient(low = "gray88", high = "deeppink3", na.value = "black") + 
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    plot.caption.position = "plot"
+    )
+}
+
+#for all age:
+all_states_map_function ("all_age_f_aa_rate", "Average Incidence for All Age")
+
+#for under 50:
+all_states_map_function ("under50_f_aa_rate", "Average Incidence for Ages Under 50")
+
+#for over 50:
+
+all_states_map_function ("age50over_f_aa_rate", "Average Incidence for Ages Over 50")
+```
+
+
+# Across New England
+
+```{r analysis-2}
+# Group member 2 work here!
+
+#Function to get the rates for any age rage across New England
+new_england_map_function <- function(value, legendlabel){
+  plot_usmap(regions = "states",
+             include = c("ME", "VT", "NH", "MA", "CT", "RI"),
+             data = csv_file, 
+             value = value) +
+  theme_minimal() +
+  labs(
+    title = "Late Stage Breast Cancer Incidence Rate* across New England", 
+    subtitle = legendlabel,
+    x = NULL, 
+    y = NULL,
+    fill = paste(legendlabel,"^"),
+      #reference for paste() - https://www.geeksforgeeks.org/string-concatenation-in-r-programming/
+    caption = "*Incidence rates (cases per 100,000 population per year) are age-adjusted") +
+  scale_fill_gradient(low = "gray88", high = "deeppink3", na.value = "black") + 
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    plot.caption.position = "plot"
+    )
+}
+
+
+
+#for all age:
+new_england_map_function ("all_age_f_aa_rate", "Average Incidence for All Age")
+
+#for under 50:
+new_england_map_function ("under50_f_aa_rate", "Average Incidence for Ages Under 50")
+
+#for over 50:
+
+new_england_map_function ("age50over_f_aa_rate", "Average Incidence for Ages Over 50")
+
+```
+
+
+
+# Blog post
+
+This project maps out the Late Stage Breast Cancer Incidence Rates with state-level age-adjusted data from @BCancerRate. The data in this dataset are segmented by age of the women. For this project, we have taken the data for All Ages, Ages Under 50 and Ages 50 & Over. To note, this data explicitly states that it does not include Nevada and Puerto Rico, but the dataset does not mention that Indiana is missing data, so we are taking all the states (including Hawaii and Alaska) besides Nevada and Indiana for our analysis.
+With this data, we aimed to find whether there was a general trend of breast cancer across the USA and New England.
+
+For the first segment of our analysis, we explored the late stage cancer incidence rates across all the states in the USA. 
+For all age averages, southeastern states of Mississippi, Louisiana and Georgia shows the highest incidence. Massachusetts and Arizona shows the least incidence. 
+For under 50 age averages, the northern and eastern states show the highest incidence. Interestingly, South Dakota has one of the minimum incidence rates unlike the surrounding states. The South has a general trend of least incidence.
+For over 50, the trend is similar to the all ages average with Mississippi, Louisiana and Georgia having the highest incidence.
+
+For the second segment of our analysis, we explored the late stage cancer incidence rates across the New England area in the USA.
+For all age averages, New Hampshire and Connecticut had the highest incidence rates in the New England area, while Massachusetts had the lowest incidence rate.
+For under 50 age averages, Connecticut and Rhode Island show the highest incidence, while Massachusetts remains with the lowest rate.
+For over 50,the trend remains similar to the previous trend with all ages and under 50, showing New Hampshire with the highest rate, while Connecticut is second highest, similar to the trend in all ages. As always, Massachusetts remains the lowest incidence rate.
+
+Overall, some states show a general trend of late stage breast cancer incidence across all age groups. However, we cannot find a direct relationship between the cancer incidence rates and the geographical or population size. Therefore, we hypothesize that some other influencing factors should exist. Further metadata is required for more granular analysis. It may also help if we had data from Nevada and Indiana.

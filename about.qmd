@@ -1,0 +1,28 @@
+---
+title: "Emily's Website"
+about:
+  id: ren
+  template: trestles
+  image: "2027eren.jpg"
+  links:
+
+    - icon: github
+      text: GitHub
+      href: https://github.com/seren5
+    - icon: bookmark
+      text: Smith
+      href: https://www.smith.edu/
+---
+
+**Emily Ren** is a current sophomore studying Computer Science and Economics. In her spare time, she enjoys reading, playing games, and learning new things (ranging from languages to other skills like crocheting).
+
+## Classes Taken
+Object Oriented Programming
+Data Structures
+Computer Networks
+Intermediate Microeconomics
+Introductory Macroeconomics
+Introduction to Statistics and Econometrics
+Discrete Math
+Calculus 2
+

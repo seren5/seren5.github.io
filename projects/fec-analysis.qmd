@@ -1,0 +1,224 @@
+---
+title: "SDS 192 Mini-Project 2"
+subtitle: "SDS 192"
+author: 
+- name: Maisha
+  affiliation: Smith College
+- name: Emily
+  affiliation: Smith College
+  
+date: "`r format(Sys.Date(), '%B %e, %Y')`"
+editor: 
+  mode: source
+output: 
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    theme: lumen
+    df_print: paged
+    code_folding: show
+    
+execute:
+  echo: false
+  warning: false
+---
+
+```{r setup}
+library(tidyverse)
+library(fec16)
+```
+
+
+
+```{r analysis-1}
+# Author 2 code:
+sorted_presidential_results <- # Sorts presidential results based on candidate id and general votes, removing NA values, and combining redundant candidate ids due to different states
+  results_president |>
+  select(cand_id, general_votes) |>
+  filter(!is.na(general_votes)) |>
+  group_by(cand_id) |>
+  summarize(total_vote = sum(general_votes))
+
+
+sorted_campaign <- # Sorts campaign based on candidate id, party affilliation, total receipts, and removes parties that aren't Republican or Democratic
+  campaigns |>
+  select(cand_id, cand_pty_affiliation, ttl_receipts) |>
+  filter(cand_pty_affiliation %in% c("REP", "DEM"))
+
+sorted_presidential_campaign <- # Inner joins campaign and presidential results by candidate id
+  sorted_presidential_results |>
+  inner_join(sorted_campaign, by = join_by(cand_id))
+
+ggplot(sorted_presidential_campaign,
+       aes(x = ttl_receipts,
+           y = total_vote,
+           color = cand_pty_affiliation)) +
+  geom_jitter(size = 2.5, alpha = 0.6) + # Jitters the plot so that values are a little more visible
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_x_continuous(labels = scales::label_comma()) +
+  labs(
+    title = "Correlation Between Total Receipts and Total Votes",
+    subtitle = "Of Democrats vs. Republican Candidates (Including Extreme Outliers)",
+       x = "Total Receipts",
+       y = "Total Votes",
+       color = NULL,
+       caption = "The 'Total Receipts' variable of Democratic candidates vs. Republican candidates has been mapped to x-axis and the y-axis reflects the 'Total Votes' each candidate receives.
+       The  color maps the 'Candidate Party Affiliation' variable with whether the candidate is Democratic or Republican.
+       
+       Source: fec16 with data from the Federal Election Committee (https://github.com/baumer-lab/fec16/tree/master)") +
+  scale_color_manual(values = c("#0000FF", "#FF0000")) + # Manually changes the control variable colors
+  
+  # Formatting the graph
+  theme_minimal() +
+  theme(
+    # aligning the caption to the plot area instead of panel
+    plot.caption.position = "plot", 
+    
+    # positioning the legends on the top
+    legend.position = "top",
+    
+    # formatting texts and margins for the texts and titles
+    axis.text = element_text(size = 6), 
+    plot.title = element_text(face = "bold", 
+                              hjust = "0.5"),  
+    plot.margin = margin(t = 20, r = 50, b = 0, l = 40),
+    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+    axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0)),
+    plot.caption = element_text(color = alpha("black", 0.5),
+                                face = "italic",
+                                size = 7,
+                                margin = margin(t = 20, r = -30, b = 20, l = 50)),
+    plot.subtitle = element_text(hjust = "0.5"),
+    
+    # formatting grid color
+    panel.grid = element_line(color = alpha("grey", 0.2)), )
+
+filtered_presidential_campaign <- # Removes the extreme outliers to see if there's any correlation on a smaller scale
+  sorted_presidential_campaign |>
+  filter(ttl_receipts < 300000000) # Filters out total receipt values over 
+
+# ttl_receipts -> money they had to spend
+
+ggplot(filtered_presidential_campaign,
+       aes(x = ttl_receipts,
+           y = total_vote,
+           color = cand_pty_affiliation)) +
+  geom_jitter(size = 2, alpha = 0.6)+
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_x_continuous(labels = scales::label_comma())+
+  labs(
+    title = "Correlation Between Total Receipts and Total Votes",
+    subtitle = "Of Democrats vs. Republican Candidates (Excluding Extreme Outliers with over 300,000,000 Total Receipts)",
+       x = "Total Receipts",
+       y = "Total Votes",
+       color = NULL,
+       caption = "The 'Total Receipts' variable of Democratic candidates vs. Republican candidates has been mapped to x-axis and the y-axis reflects the 'Total Votes' each candidate receives.
+       The  color maps the 'Candidate Party Affiliation' variable with whether the candidate is Democratic or Republican.
+       
+       Source: fec16 with data from the Federal Election Committee (https://github.com/baumer-lab/fec16/tree/master)") +
+  scale_color_manual(values = c("#0000FF", "#FF0000")) + # Manually changes the control variable colors
+
+# Formatting the graph
+  theme_minimal() +
+  theme(
+    # aligning the caption to the plot area instead of panel
+    plot.caption.position = "plot", 
+    
+    # positioning the legends on the top
+    legend.position = "top",
+    
+    # formatting texts and margins for the texts and titles
+    axis.text = element_text(size = 6), 
+    plot.title = element_text(face = "bold", 
+                              hjust = "0.5"),  
+    plot.margin = margin(t = 20, r = 50, b = 0, l = 40),
+    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+    axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0)),
+    plot.caption = element_text(color = alpha("black", 0.5),
+                                face = "italic",
+                                size = 7,
+                                margin = margin(t = 20, r = -30, b = 20, l = 50)),
+    plot.subtitle = element_text(hjust = "0.5"),
+    
+    # formatting grid color
+    panel.grid = element_line(color = alpha("grey", 0.2)), )
+```
+
+```{r analysis-2}
+# Author 1 code
+# Join the committee and president election result with candidate ID
+results_president_contribution <- 
+  contributions |>
+  inner_join(results_president, by = "cand_id", suffix = c("_committee","_president")) |>
+  
+  # Filtering for presidential election canditates from Democrat or Republican party running in Pennsylvania 
+  filter(state_president == "PA" & (party %in% "REP" | party %in% "DEM") & !is.na(cand_id)) |>
+  
+  # Summarising the transaction type for each candidate
+  group_by(cand_id, transaction_tp) |>
+  summarise(total_transaction = sum(transaction_amt)) 
+
+# Recoding candidate id to name and transaction types to their description
+results_president_contribution$cand_name <-
+  recode(
+    results_president_contribution$cand_id, 
+    "P00003392" = "Hillary Clinton", 
+    "P80001571" = "Donald Trump",
+    .default = NA_character_
+  )
+
+results_president_contribution$transaction_desc <-
+  recode(
+    results_president_contribution$transaction_tp, 
+    "24A" = "24A: Independent expenditure opposing election of candidate", 
+    "24E" = "24E: Independent expenditure advocating election of candidate",
+    "24F" = "24F: Communication cost for candidate (only for Form 7 filer)",
+    "24K" = "24K: Contribution made to nonaffiliated committee",
+    .default = NULL
+  )
+
+#visualizing
+ggplot(data = results_president_contribution, 
+       aes(x = factor(cand_name), y = total_transaction, fill = transaction_desc)) +
+geom_bar(stat= "identity", position ="dodge") +
+scale_y_continuous(label = scales::comma) +
+scale_fill_brewer(palette = "Set1") + # Manually changes the control variable colors 
+  theme_minimal() +
+  labs(x = NULL,
+       y = "Total Transaction Amount",
+       fill = "Transaction Type",
+       title = "Total Transaction by Committees for 2016 Presidential Candidates",
+       subtitle = "Presidential candidate race in the state of Pennsylvania",
+       caption = "Source: fec16 with data from the Federal Election Committee (https://github.com/baumer-lab/fec16/tree/master)") +
+  theme(
+    # aligning the caption to the plot area instead of panel
+    plot.caption.position = "plot", 
+    
+    # formatting texts and margins for the texts and titles
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1), 
+    plot.title = element_text(face = "bold"),  
+    plot.margin = margin(t = 20, r = 50, b = 0, l = 40),
+    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+    plot.caption = element_text(color = alpha("black", 0.5),
+                                face = "italic",
+                                size = 7,
+                                margin = margin(t = 20, r = -30, b = 20, l = 50)),
+    # formatting grid color
+    panel.grid = element_line(color = alpha("grey", 0.2)), 
+  )
+
+```
+
+
+
+# Blog post
+
+This project uses the data published by the U.S. Federal Election in the 2015-2016 election cycle. The aim is to explore the expenditures and committee contributions for Democrats and Republicans in the presidential election.
+
+Part 1 of the analysis looks into the total receipts for Democratic vs. Republican candidates in the presidential election and the correlation with total votes. Total receipts are the money the candidates had that they could spend (and didn’t necessarily spend it all).
+For our analysis, we got the total receipts and total votes, and our initial hypothesis was that perhaps there was some correlation between the amount of money they had to spend and the amount of votes they got, as they could put that money towards campaigning and other purposes. However, this was not the case, and there seemed to be no correlation between the two, even when removing outliers from the graph to see if a correlation exists for candidates with a lesser amount of total receipts. Furthermore, there seemed to be no correlation between those two variables and whether the candidate was a Democrat or Republican.
+
+Part 2 of the analysis looks into the transactions made by the committees for candidates running in the presidential election in Pennsylvania. The two candidates running here in 2016 were Hillary Clinton and Donald Trump - the latter winning in the state. 
+For our analysis, we get the total transaction amount for each category of transaction type for each candidate. Our initial hypothesis was that we would find some positive correlation with the amount of transactions in favor of the election result. However, we found that the highest transaction was made for Donald Trump's campaign opposing his candidacy (24A).
+Independent expenditure advocating the candidacy (24E) was almost similar for both candidates. Clinton's campaign had significantly more expenditure for communication (24F) than that of Trump's. However, the amount of money spent against Trump's candidacy exceeds that of Clinton by a huge difference. Nevertheless, despite these factors, Trump had a successful race in Pennsylvania. The bar chart effectively helps us to visualize this insight. 

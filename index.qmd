@@ -1,0 +1,42 @@
+---
+title: "Emily's Website Portfolio"
+---
+
+Welcome to Emily's Website Portfolio!
+
+This is the landing page.
+
+Here's an interactive map of where I've lived (for fun) and my SDS 192 projects below (had permission from Maisha to include her name).
+
+## Places I've Lived
+```{r}
+#| echo: false
+#| warnings: false
+library(leaflet)
+
+# Mapping the cities with the coordinates
+locations <- data.frame(
+  name = c("Shenyang", "New York", "Lyon", "Lisbon", "Luxembourg"),
+  lat = c(41.8057, 40.7128, 45.75, 38.7169, 49.6117),  # Latitude
+  lon = c(123.4328, -74.0060, 4.85, -9.1395, 6.13)  # Longitude
+)
+
+# Leaflet map with markers
+map <- leaflet() %>%
+  addTiles() %>%  # OpenStreetMap tiles
+  addMarkers(data = locations, 
+             ~lon, ~lat, 
+             popup = ~name)  # City names in popups
+
+# Displays map
+map
+
+```
+
+## SDS 192 Projects
+
+[Project 1](projects/scorecard_analysis.qmd)
+
+[Project 2](projects/fec-analysis.qmd)
+
+[Project 3](projects/mapping.qmd)

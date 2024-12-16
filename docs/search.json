@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Emily’s Website Portfolio",
+    "section": "",
+    "text": "Welcome to Emily’s Website Portfolio!\nThis is the landing page.\nHere’s an interactive map of where I’ve lived (for fun) and my SDS 192 projects below (had permission from Maisha to include her name)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Emily’s Website",
+    "section": "",
+    "text": "Emily Ren is a current sophomore studying Computer Science and Economics. In her spare time, she enjoys reading, playing games, and learning new things (ranging from languages to other skills like crocheting)."
+  },
+  {
+    "objectID": "about.html#student-hours",
+    "href": "about.html#student-hours",
+    "title": "My website",
+    "section": "Student Hours",
+    "text": "Student Hours\nDrop into the office:\n\nWednesday: 1:30-2:30 pm\nBy appointment in McConnell 214\n\nPlease let me know if the above times do not work for your schedule and we can coordinate another time."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "My website",
+    "section": "Education",
+    "text": "Education\n\nMS in Data Science (~2026)\nUniversity of Texas at Austin\nAustin, Texas\nMA in Mathematics (2009)\nAppalchain State University\nBoone, NC\nBA in Mathematics (2007)\nUC Santa Cruz\nSanta Cruz, CA"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "My website",
+    "section": "Experience",
+    "text": "Experience\n\nProfessor of Mathematics\nHolyoke Community College\nHolyoke, MA 2014–2023"
+  },
+  {
+    "objectID": "maps/function_map.html",
+    "href": "maps/function_map.html",
+    "title": "Where we’re from.",
+    "section": "",
+    "text": "#install.packages(googlesheets4)\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(maps)\n\n\nAttaching package: 'maps'\n\nThe following object is masked from 'package:purrr':\n\n    map\n\nlibrary(googlesheets4)\n\n\nclass_info &lt;- read_sheet(\"https://docs.google.com/spreadsheets/d/1XOAFQvBcFvhKwEl5xH6l3nRJK2Wk0hWZ18S9kAZclQ0/edit?usp=sharing\") |&gt;\n  janitor::clean_names()\n\n! Using an auto-discovered, cached token.\n  To suppress this message, modify your code or options to clearly consent to\n  the use of a cached token.\n  See gargle's \"Non-interactive auth\" vignette for more details:\n  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;\nℹ The googlesheets4 package is using a cached token for 'eren@smith.edu'.\nAuto-refreshing stale OAuth token.\n✔ Reading from \"Fall 2024  Questionnaire (Responses)\".\n✔ Range 'Form Responses 1'.\n\n# selecting only the column we are interested in and making it into a vector.\ncountry_vector &lt;- as.vector( \n  class_info |&gt;\n    select(\"country\"))\n\n\nclass_maps &lt;- function(country_vector){\n  \n  # Put the body of your function here, don't overthink it.\n  map(regions = country_vector$country)\n  \n}\n# If the line below throws an error its possible your country is not in the database or mispelled. \nclass_maps(country_vector)\n\n\n\n\n\n\n\n\n\n# A function for finding appropriate names of countries\n\n# A test vector\nsub_vector&lt;- country_vector$country\n\nmap_names &lt;- function(name){\n  # The first line makes sure we have a string\n  name &lt;- as.character(name)\n  \n  # All 1600 names are in the database can be save as follows\n  vector_of_names &lt;- map(plot = FALSE)$names\n  \n  # This gets a vector of boolean values. \n  Truths &lt;- name %in% vector_of_names\n  \n  \n  print(\"The following countries are in the databse\")\n  \n  # This goes back to our original vector and extrance only the true names. \n  print(name[Truths])\n  \n  print(\"The following countries are not in the databse\")\n  \n  # This goes back to our original vector and extrance only the true names. \n  print(name[Truths == FALSE])\n  \n}\nmap_names(sub_vector)\n\n[1] \"The following countries are in the databse\"\n[1] \"USA\"        \"Kenya\"      \"China\"      \"USA\"        \"China\"     \n[6] \"Bangladesh\"\n[1] \"The following countries are not in the databse\"\n[1] \"usa\"           \"United States\" \"United States\" \"Kashmir\""
+  },
+  {
+    "objectID": "maps/fancy_maps.html",
+    "href": "maps/fancy_maps.html",
+    "title": "Fancier Maps",
+    "section": "",
+    "text": "We can use leaflet to make some fancier maps.\n\n#install.packages(leaflet)\nlibrary(leaflet)\n\nManual here Here is a text on leaflet.\n\nleaflet()|&gt;\n  addTiles()\n\n\n\n\n\nLet’s put Smith College on the map. Here’s the lat and long.\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = 72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\nWhooops. We need a negative sign to indicate west.\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = -72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\n\nleaflet()|&gt;\n  addTiles() |&gt;\n  addMarkers(lng = -72.6403,\n             lat = 42.3163,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\")\n\n\n\n\n\nYou try:\n\nPut your home city and Smith College on the same map.\nUse awesomeIcons() to make your home look like a home and smith look like a college.\n\nYou will first need to save the icon an object. (Maybe the home is called home).\nHint: Use icon “education”, “book”, “sleeping” for the college icon.\nThen you will need to use addAwesomeMarkers().\n\nFinally add this webpage to your index.qmd and make sure it renders correctly.\n\n\n# My awesome icons are not working on the rendered map\n# Created objects for Smith & home icons\neducation &lt;- awesomeIcons(icon = \"education\",\n                          iconColor = \"black\")\nhome &lt;- awesomeIcons(iconColor = \"white\")\n\n# Used awesome markers to mark it on the map\nleaflet()|&gt;\n  addTiles() |&gt;\n  addAwesomeMarkers(lng = -72.6403,\n             lat = 42.3163,\n             icon = education,\n             popup = \"Home of the Pioneers\",\n             label = \"Smith College\") |&gt;\n  addAwesomeMarkers(lng = 123.4330,\n             lat = 41.8048,\n             icon = home,\n             popup = \"Original Hometown\",\n             label = \"Shenyang\")"
+  },
+  {
+    "objectID": "maps/first_map.html",
+    "href": "maps/first_map.html",
+    "title": "1st_Maps",
+    "section": "",
+    "text": "#install.packages(\"maps\")\nlibrary(maps)\nHere are some maps from the map package. 1"
+  },
+  {
+    "objectID": "maps/first_map.html#the-world",
+    "href": "maps/first_map.html#the-world",
+    "title": "1st_Maps",
+    "section": "The world",
+    "text": "The world\n\nmap()"
+  },
+  {
+    "objectID": "maps/first_map.html#the-us",
+    "href": "maps/first_map.html#the-us",
+    "title": "1st_Maps",
+    "section": "The US",
+    "text": "The US\n\nmaps::map(database = \"state\")\n\n\n\n\n\n\n\n\n\nmap(database = \"state\", regions = \"Massachusetts\")\n\n\n\n\n\n\n\n\n\nmap(database = \"county\", regions = c(\"Massachusetts\"))\nmap.cities()\n\n\n\n\n\n\n\n\n\nnew_england &lt;-c('Vermont',\"Massachusetts\",\"Connecticut\", \"Rhode Island\", \"New Hampshire\", \"Maine\")\n\nmap(database = \"county\", regions = new_england)\nmap.cities()\n\n\n\n\n\n\n\n\nYou try:\nFirst maps\n\nAdd another map of California, Oregon and Washington.\n\nColor this map. hint: type ?map() into the console to read the documentation.\n\nColor the map with three colors of your choice.\nColor the border only.\n\n\nMake a world map with China, Indonesia and Australia.\n\n\nmap(database = \"state\", regions = c(\"California\", \"Oregon\", \"Washington\"), fill = TRUE, col = c(\"orange\", \"blue\", \"pink\", \"green\"))\n\n\n\n\n\n\n\n\n\nmap(database = \"state\", regions = c(\"California\", \"Oregon\", \"Washington\"), fill = FALSE, col = c(\"purple\"))\n\n\n\n\n\n\n\n\n\nmap(database = \"world\", regions = c(\"China\", \"Indonesia\", \"Australia\"))"
+  },
+  {
+    "objectID": "maps/first_map.html#footnotes",
+    "href": "maps/first_map.html#footnotes",
+    "title": "1st_Maps",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://cran.r-project.org/web/packages/maps/maps.pdf↩︎"
+  },
+  {
+    "objectID": "projects/scorecard_analysis.html",
+    "href": "projects/scorecard_analysis.html",
+    "title": "SDS 192 Mini-Project 1",
+    "section": "",
+    "text": "Plot 1\n\n\n\n\n\n\n\n\n\n\n\nPlot 2\n\n\n\n\n\n\n\n\n\n\n\nBlog post\n “Does the governance structure of the largest colleges in Massachusetts affect the retention rate?” \nWe investigated this question using the College Scorecard dataset. This data aims to increase transparency and help prospective students and families compare colleges based on their goals and requirements. The College Scorecard was produced by the U.S. Department of Education taking data from the federal reporting from institutions, data on federal financial aid, and tax information. These were taken directly or derived from the data reported to the Integrated Postsecondary Education Data System (IPEDS).\nFrom the dataset, we investigated our question using the data of 50 colleges in Massachusetts with the largest undergraduate student population. Delving deeper, we explored the governance structure and retention rates. Firstly, we grouped our selection of colleges based on the cities these are located in and then visualized the distribution of the type of governance structures – whether the colleges are Public, Private Non-profit, or Private For-profit. Then, we examined the correlation between retention rates and the undergraduate population based on the type of institution to help us draw conclusions from the data.\nThe first plot explores the governance structure of the largest 50 colleges in different cities of Massachusetts. The largest 50 schools are grouped with the cities these are located in and the length of the bars indicates the number of Public, Private Non-Profit, and Private For-Profit universities in each of those cities. Notably, there are no Private For-profit college in our selection, hence the bar chart omits the category. The plot concludes Boston has the highest number of big schools, followed by Worcester, Springfield, and Cambridge. The colors of the bars indicate that overall the number of public schools is higher than the number of private colleges in our selection of the largest MA colleges.\nThe second plot explores the correlation between the undergraduate population and the retention rate. For public colleges, we can see an inconclusive positive correlation between a larger undergraduate population and a higher retention rate as the points are scattered, showing that larger public universities are likely to have a higher retention rate. However, the points for private nonprofit colleges are in a larger cluster, signifying that there isn’t a direct and obvious correlation between undergraduate student body size and retention rate.\nAssumptions and commitments that informed this data set include assuming that the colleges participate in Title IV programs (or meet similar criteria to participating institutions), and that these colleges report wholly correct data to the IPEDS. However, a lot of the data is missing as colleges did not report some data to the IPEDS. The educational institutions and organizations collecting the data have had a say regarding this dataset, and it is hard to find reliable data if the institutions don’t report their information. The benefits and harms of this dataset may be (shouldn’t be, but) that institutions can pick and choose the data they present, so that either data is missing, or it is positively skewed towards certain institutions when it’s beneficial."
+  },
+  {
+    "objectID": "maps/to_dos.html",
+    "href": "maps/to_dos.html",
+    "title": "Tasks",
+    "section": "",
+    "text": "Make a website\n\nRender your index.qmd to make your website.\n\nIf the website doesn’t pop up go docs/index.html to look at it.\nDelete the file called first_map_files, what happens to your first map page?\n\nAdd the overview of the course to the the index as a link.\n\nEdit the about\nEdit the about.qmd to have some information about you. At the moment it is all about me. Render often and figure out what is changing as you edit."
+  },
+  {
+    "objectID": "about.html#classes-taken",
+    "href": "about.html#classes-taken",
+    "title": "Emily’s Website",
+    "section": "Classes Taken",
+    "text": "Classes Taken\nObject Oriented Programming Data Structures Computer Networks Intermediate Microeconomics Introductory Macroeconomics Introduction to Statistics and Econometrics Discrete Math Calculus 2"
+  },
+  {
+    "objectID": "projects/fec-analysis.html",
+    "href": "projects/fec-analysis.html",
+    "title": "SDS 192 Mini-Project 2",
+    "section": "",
+    "text": "Blog post\nThis project uses the data published by the U.S. Federal Election in the 2015-2016 election cycle. The aim is to explore the expenditures and committee contributions for Democrats and Republicans in the presidential election.\nPart 1 of the analysis looks into the total receipts for Democratic vs. Republican candidates in the presidential election and the correlation with total votes. Total receipts are the money the candidates had that they could spend (and didn’t necessarily spend it all). For our analysis, we got the total receipts and total votes, and our initial hypothesis was that perhaps there was some correlation between the amount of money they had to spend and the amount of votes they got, as they could put that money towards campaigning and other purposes. However, this was not the case, and there seemed to be no correlation between the two, even when removing outliers from the graph to see if a correlation exists for candidates with a lesser amount of total receipts. Furthermore, there seemed to be no correlation between those two variables and whether the candidate was a Democrat or Republican.\nPart 2 of the analysis looks into the transactions made by the committees for candidates running in the presidential election in Pennsylvania. The two candidates running here in 2016 were Hillary Clinton and Donald Trump - the latter winning in the state. For our analysis, we get the total transaction amount for each category of transaction type for each candidate. Our initial hypothesis was that we would find some positive correlation with the amount of transactions in favor of the election result. However, we found that the highest transaction was made for Donald Trump’s campaign opposing his candidacy (24A). Independent expenditure advocating the candidacy (24E) was almost similar for both candidates. Clinton’s campaign had significantly more expenditure for communication (24F) than that of Trump’s. However, the amount of money spent against Trump’s candidacy exceeds that of Clinton by a huge difference. Nevertheless, despite these factors, Trump had a successful race in Pennsylvania. The bar chart effectively helps us to visualize this insight."
+  },
+  {
+    "objectID": "about.html#places-ive-lived",
+    "href": "about.html#places-ive-lived",
+    "title": "Emily’s Website",
+    "section": "Places I’ve Lived",
+    "text": "Places I’ve Lived"
+  },
+  {
+    "objectID": "index.html#section",
+    "href": "index.html#section",
+    "title": "Emily’s Website Portfolio",
+    "section": "",
+    "text": "Project 1\nProject 2\nProject 3"
+  },
+  {
+    "objectID": "index.html#places-ive-lived",
+    "href": "index.html#places-ive-lived",
+    "title": "Emily’s Website Portfolio",
+    "section": "Places I’ve Lived",
+    "text": "Places I’ve Lived"
+  },
+  {
+    "objectID": "index.html#sds-192-projects",
+    "href": "index.html#sds-192-projects",
+    "title": "Emily’s Website Portfolio",
+    "section": "SDS 192 Projects",
+    "text": "SDS 192 Projects\nProject 1\nProject 2\nProject 3"
+  },
+  {
+    "objectID": "projects/mapping.html",
+    "href": "projects/mapping.html",
+    "title": "SDS 192 Project 3",
+    "section": "",
+    "text": "Across the USA\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAcross New England\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBlog post\nThis project maps out the Late Stage Breast Cancer Incidence Rates with state-level age-adjusted data from Jeremy Lyman (2020). The data in this dataset are segmented by age of the women. For this project, we have taken the data for All Ages, Ages Under 50 and Ages 50 & Over. To note, this data explicitly states that it does not include Nevada and Puerto Rico, but the dataset does not mention that Indiana is missing data, so we are taking all the states (including Hawaii and Alaska) besides Nevada and Indiana for our analysis. With this data, we aimed to find whether there was a general trend of breast cancer across the USA and New England.\nFor the first segment of our analysis, we explored the late stage cancer incidence rates across all the states in the USA. For all age averages, southeastern states of Mississippi, Louisiana and Georgia shows the highest incidence. Massachusetts and Arizona shows the least incidence. For under 50 age averages, the northern and eastern states show the highest incidence. Interestingly, South Dakota has one of the minimum incidence rates unlike the surrounding states. The South has a general trend of least incidence. For over 50, the trend is similar to the all ages average with Mississippi, Louisiana and Georgia having the highest incidence.\nFor the second segment of our analysis, we explored the late stage cancer incidence rates across the New England area in the USA. For all age averages, New Hampshire and Connecticut had the highest incidence rates in the New England area, while Massachusetts had the lowest incidence rate. For under 50 age averages, Connecticut and Rhode Island show the highest incidence, while Massachusetts remains with the lowest rate. For over 50,the trend remains similar to the previous trend with all ages and under 50, showing New Hampshire with the highest rate, while Connecticut is second highest, similar to the trend in all ages. As always, Massachusetts remains the lowest incidence rate.\nOverall, some states show a general trend of late stage breast cancer incidence across all age groups. However, we cannot find a direct relationship between the cancer incidence rates and the geographical or population size. Therefore, we hypothesize that some other influencing factors should exist. Further metadata is required for more granular analysis. It may also help if we had data from Nevada and Indiana.\n\n\n\n\n\nReferences\n\nJeremy Lyman. 2020. “NCI State Late Stage Breast Cancer Incidence Rates.” National Cancer Institute. https://hub.arcgis.com/datasets/NCI::nci-state-late-stage-breast-cancer-incidence-rates/about."
+  }
+]
