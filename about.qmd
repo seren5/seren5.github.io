@@ -10,8 +10,8 @@ about:
       text: GitHub
       href: https://github.com/seren5
     - icon: bookmark
-      text: Smith
-      href: https://www.smith.edu/
+      text: Surprise
+      href: https://theuselessweb.com/
 ---
 
 **Emily Ren** is a current sophomore studying Computer Science and Economics. In her spare time, she enjoys reading, playing games, and learning new things (ranging from languages to other skills like crocheting).
