@@ -18,18 +18,18 @@ about:
 
 ## Classes Taken
 
-Object Oriented Programming
+-   Object Oriented Programming
 
-Data Structures
+-   Data Structures
 
-Computer Networks
+-   Computer Networks
 
-Intermediate Microeconomics
+-   Intermediate Microeconomics
 
-Introductory Macroeconomics
+-   Introductory Macroeconomics
 
-Introduction to Statistics and Econometrics
+-   Introduction to Statistics and Econometrics
 
-Discrete Math
+-   Discrete Math
 
-Calculus 2
+-   Calculus 2
