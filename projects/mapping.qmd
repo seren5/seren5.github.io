@@ -2,10 +2,10 @@
 title: "SDS 192 Project 3"
 subtitle: "Maps"
 author: 
-- name: Maisha Tasneem
-  affiliation: Smith College
-- name: Emily Ren
-  affiliation: Smith College
+- name: Maisha
+  affiliation: removed
+- name: Emily
+  affiliation: removed
 date: "`r format(Sys.Date(), '%B %e, %Y')`"
 editor: 
   mode: source

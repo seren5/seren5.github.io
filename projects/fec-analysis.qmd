@@ -3,9 +3,9 @@ title: "SDS 192 Mini-Project 2"
 subtitle: "SDS 192"
 author: 
 - name: Maisha
-  affiliation: Smith College
+  affiliation: removed
 - name: Emily
-  affiliation: Smith College
+  affiliation: removed
   
 date: "`r format(Sys.Date(), '%B %e, %Y')`"
 editor: 
