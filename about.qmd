@@ -17,12 +17,19 @@ about:
 **Emily Ren** is a current sophomore studying Computer Science and Economics. In her spare time, she enjoys reading, playing games, and learning new things (ranging from languages to other skills like crocheting).
 
 ## Classes Taken
-Object Oriented Programming
-Data Structures
-Computer Networks
-Intermediate Microeconomics
-Introductory Macroeconomics
-Introduction to Statistics and Econometrics
-Discrete Math
-Calculus 2
 
+Object Oriented Programming
+
+Data Structures
+
+Computer Networks
+
+Intermediate Microeconomics
+
+Introductory Macroeconomics
+
+Introduction to Statistics and Econometrics
+
+Discrete Math
+
+Calculus 2
